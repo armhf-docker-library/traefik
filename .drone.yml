@@ -1,12 +1,10 @@
 matrix:
   TRAEFIK_VERSION:
     - 1.1.2
-    - 1.1.1
 
 pipeline:
   clone:
     image: armhfplugins/git
-
   publish:
     image: armhfplugins/docker
     username: ${DOCKER_USER}
@@ -18,18 +16,3 @@ pipeline:
       - TRAEFIK_VERSION=${TRAEFIK_VERSION}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
-  publish_latest:
-    image: armhfplugins/docker
-    username: ${DOCKER_USER}
-    email: ${DOCKER_EMAIL}
-    password: ${DOCKER_PASSWORD}
-    repo: armhfbuild/traefik
-    tags: latest
-    build_args:
-      - TRAEFIK_VERSION=${TRAEFIK_VERSION}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    when:
-      matrix:
-        TRAEFIK_VERSION: 1.1.2
